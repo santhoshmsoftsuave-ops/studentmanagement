@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  cosmosdb:
+    container_name: new-cosmo
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    restart: always
+    tty: true
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "0.0.0.0" 
+      AZURE_COSMOS_EMULATOR_SKIP_CERT_VALIDATION: "true"
+    ports:
+      - "8081:8081"
+      - "10250:10250"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    volumes:
+      - cosmosdb_data:/var/lib/cosmosdb
+    networks:
+      - cosmosnet
+
+volumes:
+  cosmosdb_data:
+
+networks:
+  cosmosnet:
+    driver: bridge
